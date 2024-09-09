@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template # type: ignore
 
 def create_app():
     """Create the Flask app instance"""
@@ -7,7 +7,7 @@ def create_app():
 
     @app.route("/")
     def index_page():
-        return render_template("first.html")
+        return render_template("landing.html")
 
     return app
 
