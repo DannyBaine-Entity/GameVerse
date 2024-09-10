@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to GameVoid</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+
+    <!-- Google Font for the gaming theme -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome Icons for the gaming icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #1f1f30;
+            font-family: 'Press Start 2P', cursive;
+        }
+        .container {
+            text-align: center;
+        }
+        h1 {
+            color: #00ff99;
+        }
+        p {
+            color: #ffffff;
+        }
+        .btn-group {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <a href="/login" class="btn btn-light"><i class="fas fa-sign-in-alt"></i> Login</a>
+        <a href="/register" class="btn btn-light"><i class="fas fa-user-plus"></i> Register</a>
+    </div>
+
+    <div class="container">
+        <h1>Welcome to GameVoid!</h1>
+        <p><i class="fas fa-gamepad"></i> Your ultimate destination for gaming news, updates, and community. Stay tuned!</p>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+</body>
+
+</html>
