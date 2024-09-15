@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameVoid - Register</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+
+    <!-- Google Font for gaming theme -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome Icons for gaming icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        /* Background and general theme colors */
+        body {
+            background-color: #1e1e2f;
+            color: white;
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #0d1117;
+            border-bottom: 3px solid #0088ff;
+        }
+
+        .navbar-brand, .nav-link {
+            color: #0088ff !important;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #00ff99 !important;
+        }
+
+        /* Container background */
+        .container {
+            background-color: #2b2b3d;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Form elements */
+        h1 {
+            color: #00ff99;
+        }
+
+        .form-control {
+            background-color: #1f1f30;
+            color: #ffffff;
+            border: 1px solid #0088ff;
+        }
+
+        .form-control::placeholder {
+            color: #ccc;
+        }
+
+        /* Button with neon glow effect */
+        .btn-primary {
+            background-color: #0088ff;
+            border-color: #0088ff;
+            color: white;
+            box-shadow: 0 0 10px #00ff99, 0 0 20px #0088ff;
+        }
+
+        .btn-primary:hover {
+            background-color: #00ff99;
+            border-color: #00ff99;
+        }
+
+        /* Links with hover effects */
+        a {
+            color: #00ff99;
+        }
+
+        a:hover {
+            color: #0088ff;
+        }
+
+        small {
+            color: #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation bar -->
+    <nav class="navbar navbar-expand-lg">
+        <a class="navbar-brand" href="#">
+            <i class="fas fa-gamepad"></i> GameVoid
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Games</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Bets</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Profile</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Flash messages section -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div>
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} mt-3" role="alert">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+    <!-- Main content -->
+    <div class="container mt-5">
+        <h1>Register</h1>
+        <form action="{{ url_for('register') }}" method="POST">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required>
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+        <p>Already have an account? <a href="/login">Login</a></p>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+</body>
+
+</html>
