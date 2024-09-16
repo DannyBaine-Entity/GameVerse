@@ -16,28 +16,89 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <style>
+        /* Base Styles (Dark Mode by default) */
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #1f1f30;
+            background-image: url("{{ url_for('static', filename='GameVoid_PIC2.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            color: #ffffff;
             font-family: 'Press Start 2P', cursive;
+            transition: background-color 0.3s, color 0.3s;
         }
+
         .container {
             text-align: center;
+            background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background for better text visibility */
+            padding: 20px;
+            border-radius: 10px;
         }
+
         h1 {
             color: #00ff99;
         }
+
         p {
             color: #ffffff;
         }
+
         .btn-group {
             position: absolute;
             top: 20px;
             right: 20px;
+        }
+
+        .btn-group .btn {
+            background-color: #2b2b3d;
+            color: #00ff99;
+            border: none;
+        }
+
+        .btn-group .btn:hover {
+            background-color: #00ff99;
+            color: #1e1e2f;
+        }
+
+        /* Light Mode Overrides */
+        body.light-mode {
+            background-color: #f0f0f5; /* Light background color */
+            background-image: url("{{ url_for('static', filename='GameVoid_PIC.jpg') }}");
+            background-size: cover; /* Ensure the image covers the entire background */
+            background-position: center; /* Center the image */
+            color: #000;
+        }
+
+        body.light-mode .container {
+            color: #000;
+            background-color: #ffffff; /* Solid background for better visibility in light mode */
+        }
+
+        body.light-mode p {
+            color: #000; /* Set paragraph text color to black in light mode */
+        }
+
+        body.light-mode .btn-group .btn {
+            background-color: #ffffff;
+            color: #007bff;
+            border: none;
+        }
+
+        body.light-mode .btn-group .btn:hover {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+
+        /* Icon Styles */
+        .btn-group .theme-icon {
+            font-size: 24px; /* Increase icon size */
+        }
+
+        .btn-group .theme-icon:hover {
+            color: #00ff99; /* Optional: Change color on hover */
         }
     </style>
 </head>
@@ -46,6 +107,9 @@
     <div class="btn-group" role="group" aria-label="Basic example">
         <a href="/login" class="btn btn-light"><i class="fas fa-sign-in-alt"></i> Login</a>
         <a href="/register" class="btn btn-light"><i class="fas fa-user-plus"></i> Register</a>
+        <button type="button" id="toggleTheme" class="btn btn-light">
+            <i class="fas fa-sun theme-icon" id="themeIcon"></i> <!-- Sun icon for light mode -->
+        </button>
     </div>
 
     <div class="container">
@@ -56,6 +120,46 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+    <script>
+        // Function to toggle between light and dark modes
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.classList.contains('light-mode') ? 'light' : 'dark';
+            const themeIcon = document.getElementById('themeIcon');
+
+            // Switch theme
+            if (currentTheme === 'dark') {
+                body.classList.add('light-mode');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light'); // Save preference
+            } else {
+                body.classList.remove('light-mode');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark'); // Save preference
+            }
+        }
+
+        // On page load, apply the saved theme preference
+        window.onload = function () {
+            const savedTheme = localStorage.getItem('theme') || 'dark'; // Default to dark mode
+            document.body.classList.add(savedTheme + '-mode');
+
+            // Set the icon based on the saved theme
+            const themeIcon = document.getElementById('themeIcon');
+            if (savedTheme === 'light') {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            } else {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            }
+        };
+
+        // Event listener for the theme toggle button
+        document.getElementById('toggleTheme').addEventListener('click', toggleTheme);
+    </script>
 </body>
 
 </html>
