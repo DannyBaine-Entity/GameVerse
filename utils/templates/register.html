@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <style>
-        /* Background and general theme colors */
+        /* Base Styles (Dark Mode by default) */
         body {
             background-color: #1e1e2f;
             color: white;
@@ -85,6 +85,59 @@
         small {
             color: #ccc;
         }
+
+        /* Light Mode Overrides */
+        body.light-mode {
+            background-color: #f0f0f5;
+            color: #000;
+        }
+
+        .light-mode .navbar {
+            background-color: #e2e2e2;
+            border-bottom: 3px solid #007bff;
+        }
+
+        .light-mode .container {
+            background-color: #ffffff;
+            color: #000;
+        }
+
+        .light-mode .form-control {
+            background-color: #fff;
+            color: #000;
+            border: 1px solid #007bff;
+        }
+
+        .light-mode .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+        }
+
+        .light-mode a {
+            color: #007bff;
+        }
+
+        .light-mode a:hover {
+            color: rgb(3, 3, 93);
+        }
+
+        /* Icon Styles */
+        .navbar .theme-icon {
+            font-size: 24px; /* Increase icon size */
+        }
+
+        .navbar .theme-icon:hover {
+            color: #00ff99; /* Optional: Change color on hover */
+        }
+
+        .is-invalid {
+            border-color: #dc3545;
+        }
+
+        .is-valid {
+            border-color: #28a745;
+        }
     </style>
 </head>
 
@@ -111,27 +164,34 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Profile</a>
                 </li>
+                <!-- Light/Dark Mode Toggle Icon -->
+                <li class="nav-item">
+                    <button type="button" id="toggleTheme" class="btn btn-primary">
+                        <i class="fas fa-sun theme-icon" id="themeIcon"></i> <!-- Sun icon for light mode -->
+                    </button>
+                </li>
             </ul>
         </div>
     </nav>
 
-    <!-- Flash messages section -->
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
-      <div>
-        {% for category, message in messages %}
-          <div class="alert alert-{{ category }} mt-3" role="alert">
-            {{ message }}
-          </div>
-        {% endfor %}
-      </div>
+        <div>
+            {% for category, message in messages %}
+                {% if category == 'register' %}
+                    <div class="alert alert-danger mt-3" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
     {% endif %}
-  {% endwith %}
+    {% endwith %}
 
     <!-- Main content -->
     <div class="container mt-5">
         <h1>Register</h1>
-        <form action="{{ url_for('register') }}" method="POST">
+        <form action="{{ url_for('register') }}" method="POST" id="registerForm">
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" class="form-control" id="username" name="username" required>
@@ -145,6 +205,13 @@
                 <label for="password">Password</label>
                 <input type="password" class="form-control" id="password" name="password" required>
             </div>
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password</label>
+                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                <div id="passwordError" class="invalid-feedback">
+                    Passwords do not match!
+                </div>
+            </div>
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
         <p>Already have an account? <a href="/login">Login</a></p>
@@ -153,6 +220,75 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+
+    <script>
+        // Function to toggle between light and dark modes
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.classList.contains('light-mode') ? 'light' : 'dark';
+            const themeIcon = document.getElementById('themeIcon');
+
+            // Switch theme
+            if (currentTheme === 'dark') {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'light'); // Save preference
+            } else {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'dark'); // Save preference
+            }
+        }
+
+        // On page load, apply the saved theme preference
+        window.onload = function () {
+            const savedTheme = localStorage.getItem('theme') || 'dark'; // Default to dark mode
+            document.body.classList.add(savedTheme + '-mode');
+
+            // Set the icon based on the saved theme
+            const themeIcon = document.getElementById('themeIcon');
+            if (savedTheme === 'light') {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            } else {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            }
+        };
+
+        // Event listener for the theme toggle button
+        document.getElementById('toggleTheme').addEventListener('click', toggleTheme);
+
+        // Listen to the input event on both password fields
+        document.getElementById('confirm_password').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+
+            // Check if the passwords match
+            if (password !== confirmPassword) {
+                this.classList.add('is-invalid');
+                this.classList.remove('is-valid');
+            } else {
+                this.classList.add('is-valid');
+                this.classList.remove('is-invalid');
+            }
+        });
+
+        // Also prevent the form from being submitted if the passwords don't match
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+
+            if (password !== confirmPassword) {
+                event.preventDefault();
+                document.getElementById('confirm_password').classList.add('is-invalid');
+            }
+        });
+    </script>
 </body>
 
 </html>
