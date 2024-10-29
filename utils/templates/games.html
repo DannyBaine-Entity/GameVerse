@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GameVoid - Home</title>
+    <title>GameVoid - Games</title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
@@ -25,6 +25,11 @@
             color: white;
             font-family: 'Press Start 2P', cursive;
             transition: background-color 0.5s, color 0.5s;
+            margin: 0;
+            padding-bottom: 60px; /* Keeps content from overlapping the footer */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Navbar */
@@ -54,32 +59,46 @@
             color: #00ff99;
         }
 
-        /* Button with neon glow effect */
-        .btn-primary {
+        /* Game Cards */
+        .card {
+            background-color: #1e1e2f;
+            border: none;
+            color: white;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card-body h5 {
+            color: #00ff99;
+        }
+
+        .btn-game {
             background-color: #0088ff;
-            border-color: #0088ff;
+            border: none;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        .btn-game:hover {
+            background-color: #00ff99;
+        }
+
+        /* Theme Toggle Button Glow Effect */
+        #toggleTheme {
+            background-color: #0088ff;
+            border: none;
             color: white;
             box-shadow: 0 0 10px #00ff99, 0 0 20px #0088ff;
             transition: box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out;
         }
 
-        .btn-primary:hover {
-            background-color: #00ff99;
-            border-color: #00ff99;
+        #toggleTheme:hover {
             box-shadow: 0 0 20px #00ff99, 0 0 30px #0088ff;
-        }
-
-        /* Links with hover effects */
-        a {
-            color: #00ff99;
-        }
-
-        a:hover {
-            color: #0088ff;
-        }
-
-        small {
-            color: #ccc;
+            background-color: #00ff99;
         }
 
         /* Light Mode */
@@ -98,17 +117,24 @@
             color: #000;
         }
 
-        .light-mode .btn-primary {
+        .light-mode .card {
+            background-color: #e2e2e2;
+            color: #000;
+        }
+
+        .light-mode .btn-game {
             background-color: #007bff;
-            border-color: #007bff;
+            color: white;
         }
 
-        .light-mode a {
-            color: #007bff;
+        .light-mode #toggleTheme {
+            background-color: #007bff;
+            box-shadow: 0 0 10px #007bff, 0 0 20px #0056b3;
         }
 
-        .light-mode a:hover {
-            color: rgb(3, 3, 93);
+        .light-mode #toggleTheme:hover {
+            box-shadow: 0 0 20px #007bff, 0 0 30px #0056b3;
+            background-color: #0056b3;
         }
 
         /* Footer */
@@ -130,24 +156,6 @@
         .footer a:hover {
             color: #0088ff;
         }
-
-        /* Popular Games Stats */
-        .stats-section {
-            margin-top: 40px;
-            text-align: center;
-            color: #00ff99;
-        }
-
-        .stats-section ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .stats-section li {
-            padding: 10px;
-            font-size: 18px;
-        }
-
     </style>
 
 </head>
@@ -158,15 +166,16 @@
         <a class="navbar-brand" href="#">
             <i class="fas fa-gamepad"></i> GameVoid
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="/home">Home</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a class="nav-link" href="/games">Games</a>
                 </li>
                 <li class="nav-item">
@@ -184,20 +193,48 @@
         </div>
     </nav>
 
-    <!-- Introduction Section -->
-    <div class="container text-center">
-        <h1>Welcome to GameVoid!</h1>
-        <p>The ultimate gaming hub where players and gamers unite!</p>
-    </div>
+    <!-- Games Section -->
+    <div class="container">
+        <h1 class="text-center">Our Games</h1>
+        <p class="text-center">Discover popular games in the GameVoid universe!</p>
 
-    <!-- Popular Games Stats -->
-    <div class="stats-section">
-        <h2>Popular Games</h2>
-        <ul>
-            <li>Game 1 - 500,000 players</li>
-            <li>Game 2 - 300,000 players</li>
-            <li>Game 3 - 200,000 players</li>
-        </ul>
+        <div class="row">
+            <!-- Game Card 1 -->
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='game1.jpg') }}" class="card-img-top" alt="Game 1">
+                    <div class="card-body">
+                        <h5 class="card-title">Game 1</h5>
+                        <p class="card-text">Join the adventure in Game 1. Explore vast worlds and battle with friends!</p>
+                        <a href="#" class="btn btn-game"><i class="fas fa-play"></i> Play Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Card 2 -->
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='game2.jpg') }}" class="card-img-top" alt="Game 2">
+                    <div class="card-body">
+                        <h5 class="card-title">Game 2</h5>
+                        <p class="card-text">An epic strategy game where your skills determine the winner.</p>
+                        <a href="#" class="btn btn-game"><i class="fas fa-play"></i> Play Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Card 3 -->
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='game3.jpg') }}" class="card-img-top" alt="Game 3">
+                    <div class="card-body">
+                        <h5 class="card-title">Game 3</h5>
+                        <p class="card-text">Embark on a quest with Game 3, a fan favorite for epic challenges!</p>
+                        <a href="#" class="btn btn-game"><i class="fas fa-play"></i> Play Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Footer -->
@@ -209,6 +246,7 @@
         </p>
     </footer>
 
+    <!-- Theme Toggle Script -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
