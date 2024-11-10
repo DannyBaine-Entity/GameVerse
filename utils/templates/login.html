@@ -32,12 +32,8 @@
             border-bottom: 3px solid #0088ff;
         }
 
-        .navbar-brand, .nav-link {
+        .navbar-brand {
             color: #0088ff !important;
-        }
-
-        .navbar-nav .nav-link:hover {
-            color: #00ff99 !important;
         }
 
         /* Container background */
@@ -76,19 +72,6 @@
             border-color: #00ff99;
         }
 
-        /* Links with hover effects */
-        a {
-            color: #00ff99;
-        }
-
-        a:hover {
-            color: #0088ff;
-        }
-
-        small {
-            color: #ccc;
-        }
-
         /* Light Mode Overrides */
         body.light-mode {
             background-color: #f0f0f5;
@@ -117,14 +100,6 @@
             color: white;
         }
 
-        .light-mode a {
-            color: #007bff;
-        }
-
-        .light-mode a:hover {
-            color: rgb(3, 3, 93);
-        }
-
         /* Icon Styles */
         .navbar .theme-icon {
             font-size: 24px; /* Increase icon size */
@@ -137,36 +112,14 @@
 </head>
 
 <body>
-    <!-- Navigation bar -->
-    <nav class="navbar navbar-expand-lg">
+    <!-- Navigation bar with only site name and theme toggle button -->
+    <nav class="navbar">
         <a class="navbar-brand" href="#">
             <i class="fas fa-gamepad"></i> GameVoid
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+        <button type="button" id="toggleTheme" class="btn btn-primary ml-auto">
+            <i class="fas fa-sun theme-icon" id="themeIcon"></i> <!-- Sun icon for light mode -->
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/home">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Games</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Bets</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/profile">Profile</a>
-                </li>
-                <!-- Light/Dark Mode Toggle Icon -->
-                <li class="nav-item">
-                    <button type="button" id="toggleTheme" class="btn btn-primary">
-                        <i class="fas fa-sun theme-icon" id="themeIcon"></i> <!-- Sun icon for light mode -->
-                    </button>
-                </li>
-            </ul>
-        </div>
     </nav>
 
     {% with messages = get_flashed_messages(with_categories=true) %}

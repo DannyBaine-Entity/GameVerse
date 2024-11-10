@@ -175,6 +175,47 @@ def games():
         flash('You need to log in to access the games page.', 'danger')
         return redirect(url_for('login'))
 
+@app.route('/bets')
+def bets():
+    if 'user_id' in session:
+        user = User.query.get(session['user_id'])
+        if user:
+            return render_template("bets.html", user=user)
+        else:
+            flash('User not found.', 'danger')
+            return redirect(url_for('login'))
+    else:
+        flash('You need to log in to access the bets page.', 'danger')
+        return redirect(url_for('login'))
+
+@app.route('/submit_bet', methods=['POST'])
+def submit_bet():
+    if 'user_id' in session:
+        user = User.query.get(session['user_id'])
+        if user:
+            # Assuming you have a form with bet details
+            # Get bet details from the request form
+            game_id = request.form.get('game_id')
+            bet_amount = request.form.get('bet_amount')
+            # Add more fields as needed (e.g., bet type, outcome)
+
+            # Validate bet details (e.g., check if game_id exists, bet_amount is valid)
+            # ... your validation logic here ...
+
+            # Process the bet (e.g., update user balance, record the bet in a database)
+            # ... your bet processing logic here ...
+
+            flash('Bet submitted successfully!', 'success')
+            return redirect(url_for('bets'))  # Redirect to bets page
+        else:
+            flash('User not found.', 'danger')
+            return redirect(url_for('login'))
+    else:
+        flash('You need to log in to submit a bet.', 'danger')
+        return redirect(url_for('login'))
+
+
+
 @app.route('/logout')
 def logout():
     session.pop('user_id', None)
